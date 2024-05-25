@@ -2,6 +2,19 @@
 
 import smbus
 import time
+import sys, tty, termios
+
+def getch():
+    """Get a single character from stdin, Unix version"""
+
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())          # Raw read
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
 
 bus = smbus.SMBus(1)
 addr = 0x40
@@ -75,10 +88,11 @@ def scaleMotor(x):
     return scale(x, -100, 100, 202, 409) # 50 hz
     # return scale(x, -100, 100, 833, 1667) # 200 hz
 
+# move is the workhorse of motion.  You can pass -100 to 100 for full reverse or full forward on either left or right.
 def move(leftSpeed, rightSpeed):
     l = scaleMotor(-leftSpeed)
     r = scaleMotor(rightSpeed)
-    print(l, r)
+    # print(l, r)
     moveRaw(l, r)
 
 def moveRaw(leftValue, rightValue):
@@ -103,5 +117,25 @@ def leftTurn():
 setup_50hz()
 
 if __name__ == "__main__":
-    setup_50hz()
-
+    print("Control the mobot with the \"uiok\" keys.  q to quit.")
+    while True:
+        ch = getch()
+        if not ch:
+            print("Done")
+        # print("read string", ch, "with length", len(ch))
+        if ch == " ":
+            stop()
+        elif ch == "i":
+            forward()
+        elif ch == "k":
+            reverse()
+        elif ch == "u":
+            leftTurn()
+        elif ch == "o":
+            rightTurn()
+        elif ch == "q":
+            print("Quitting")
+            break
+        # else:
+        #     stop()
+    stop()
