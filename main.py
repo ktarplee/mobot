@@ -81,6 +81,7 @@ def setup_50hz():
 # 		tilt_setting = scale(int(line_array[2]), 50, 250, 209, 416)
 # 		bus.write_word_data(addr, 0x08, pan_setting)
 # 		bus.write_word_data(addr, 0x0c, tilt_setting)
+# pipein.close()
 
 
 
@@ -114,15 +115,26 @@ def rightTurn():
 def leftTurn():
     move(0, 100)
 
+def gimbal(pan, tilt):
+    print("PT", pan, tilt)
+    pan_setting = scale(pan, 80, 220, 209, 416)
+    tilt_setting = scale(tilt, 50, 250, 209, 416)
+    bus.write_word_data(addr, 0x08, pan_setting)
+    bus.write_word_data(addr, 0x0c, tilt_setting)
+
 setup_50hz()
 
 if __name__ == "__main__":
     print("Control the mobot with the \"uiok\" keys.  q to quit.")
+    pan = 120 # pan is backwords
+    tilt = 90 # tilt is backwords
     while True:
         ch = getch()
         if not ch:
             print("Done")
         # print("read string", ch, "with length", len(ch))
+        
+        # locomotion control
         if ch == " ":
             stop()
         elif ch == "i":
@@ -133,9 +145,22 @@ if __name__ == "__main__":
             leftTurn()
         elif ch == "o":
             rightTurn()
+        
+        # pan/tilt control
+        elif ch == "w":
+            pan += 10
+        elif ch == "e":
+            tilt -= 10
+        elif ch == "r":
+            pan -= 10
+        elif ch == "d":
+            tilt += 10
+
         elif ch == "q":
             print("Quitting")
             break
         # else:
         #     stop()
+
+        gimbal(pan, tilt)
     stop()
