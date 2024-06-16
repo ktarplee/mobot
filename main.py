@@ -93,7 +93,7 @@ def scaleMotor(x):
 def move(leftSpeed, rightSpeed):
     l = scaleMotor(-leftSpeed)
     r = scaleMotor(rightSpeed)
-    # print(l, r)
+    # print("LR", l, r)
     moveRaw(l, r)
 
 def moveRaw(leftValue, rightValue):
@@ -116,7 +116,7 @@ def leftTurn():
     move(0, 100)
 
 def gimbal(pan, tilt):
-    print("PT", pan, tilt)
+    # print("PT", pan, tilt)
     pan_setting = scale(pan, 80, 220, 209, 416)
     tilt_setting = scale(tilt, 50, 250, 209, 416)
     bus.write_word_data(addr, 0x08, pan_setting)
@@ -125,7 +125,9 @@ def gimbal(pan, tilt):
 setup_50hz()
 
 if __name__ == "__main__":
-    print("Control the mobot with the \"uiok\" keys.  q to quit.")
+    print("Control the mobot with the \"uiok\" keys.")
+    print("Control the pan/tilt with \"werd\" keys.")
+    print("q to quit.")
     pan = 120 # pan is backwords
     tilt = 90 # tilt is backwords
     while True:
