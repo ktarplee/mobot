@@ -20,8 +20,7 @@ direnv allow .
 ```
 
 ```bash
-sudo apt install python3-dev
-pip install -r requirements.txt
+sudo apt install -y python3-dev python3-smbus python3-picamera2
 ```
 
 ## Running Servo Controller
@@ -35,6 +34,13 @@ python main.py
 Install camera drivers with `sudo apt install libraspberrypi-bin`.
 
 Then capture images with `rpicam-jpeg --output ~/test.jpg`.
+
+[How to stream RPI camera to a web page](https://raspberrytips.com/how-to-live-stream-pi-camera/).
+
+```bash
+sudo apt install -y python3-picamera2
+```
+
 
 ## Troubleshooting
 
