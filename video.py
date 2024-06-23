@@ -7,6 +7,8 @@
 import io
 import logging
 import socketserver
+import cgi
+import os.path
 from http import server
 from threading import Condition
 
@@ -14,18 +16,10 @@ from picamera2 import Picamera2
 from picamera2.encoders import JpegEncoder
 from picamera2.outputs import FileOutput
 
-PAGE = """\
-<html>
-<head>
-<title>Mobot</title>
-</head>
-<body>
-<h1>Calvin's Mobot Controller</h1>
-<img src="stream.mjpg" width="640" height="480" />
-</body>
-</html>
-"""
-
+path = os.path.realpath(__file__) 
+dir = os.path.dirname(path)
+with open(os.path.join(dir, "static", 'index.html')) as f:
+    PAGE = f.read()
 
 class StreamingOutput(io.BufferedIOBase):
     def __init__(self):
@@ -36,7 +30,6 @@ class StreamingOutput(io.BufferedIOBase):
         with self.condition:
             self.frame = buf
             self.condition.notify_all()
-
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -76,7 +69,27 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         else:
             self.send_error(404)
             self.end_headers()
+    
+    def do_POST(self):
+        if self.path == '/update':
+            self.log_message("handler: Update")
 
+            form = cgi.FieldStorage(
+                fp=self.rfile,
+                headers=self.headers,
+                environ={
+                    'REQUEST_METHOD': 'POST',
+                    'CONTENT_TYPE': self.headers['Content-Type'],
+                }
+            )
+
+            for field in form.keys():
+                self.log_message("form has %s=%s", field, form[field].value)
+            self.send_response(201)
+            self.end_headers()
+        else:
+            self.send_error(404)
+            self.end_headers()
 
 class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
@@ -91,6 +104,7 @@ picam2.start_recording(JpegEncoder(), FileOutput(output))
 try:
     address = ('', 8000)
     server = StreamingServer(address, StreamingHandler)
+    print('Starting server, use <Ctrl-C> to stop')
     server.serve_forever()
 finally:
     picam2.stop_recording()

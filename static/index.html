@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <title>Mobot</title>
+</head>
+
+<body>
+    <h1>Calvin's Mobot Controller</h1>
+    <img src="stream.mjpg" width="640" height="480" />
+
+    <!-- <button type="button" id="tilt-up">Tilt Up</button>
+    <button type="button" id="tilt-down">Tilt Down</button>
+    <button type="button" id="pan-left">Pan Left</button>
+    <button type="button" id="pan-right">Pan Right</button>
+
+    <button type="button" id="move-forward">Forward</button>
+    <button type="button" id="move-reverse">Reverse</button>
+    <button type="button" id="move-left">Turn Left</button>
+    <button type="button" id="move-right">Turn Right</button> -->
+
+    <form action="" method="post">
+        <input type="submit" name="upvote" value="Upvote" />
+    </form>
+
+    <iframe name="dummy" style="display:none;"></iframe>
+    <form action="/update" method="post" target="dummy">
+        <input type="submit" name="Forward", value="Move 100 100">
+        <input type="submit" name="Reverse", value="Move -100 -100">
+        <input type="submit" name="Turn Left", value="Move -100 100">
+        <input type="submit" name="Turn Right", value="Move 100 -100">
+
+        <input type="submit" name="Tilt Up", value="Tilt 10">
+        <input type="submit" name="Tilt Down", value="Tilt -10">
+        <input type="submit" name="Pan Left", value="Pan -10">
+        <input type="submit" name="Pan Right", value="Pan 10">
+
+        <input type="submit" name="Stop", value="Move 0 0">
+        <!-- <input type="hidden" name="ad_id" value="2"> -->
+    </form>
+
+</body>
+
+</html>
