@@ -18,8 +18,6 @@ from picamera2.outputs import FileOutput
 
 path = os.path.realpath(__file__) 
 dir = os.path.dirname(path)
-with open(os.path.join(dir, "static", 'index.html')) as f:
-    PAGE = f.read()
 
 class StreamingOutput(io.BufferedIOBase):
     def __init__(self):
@@ -38,9 +36,20 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Location', '/index.html')
             self.end_headers()
         elif self.path == '/index.html':
-            content = PAGE.encode('utf-8')
+            with open(os.path.join(dir, "static", 'index.html')) as f:
+                page = f.read()
+            content = page.encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
+            self.send_header('Content-Length', len(content))
+            self.end_headers()
+            self.wfile.write(content)
+        elif self.path == '/control.js':
+            with open(os.path.join(dir, "static", 'control.js')) as f:
+                page = f.read()
+            content = page.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/javascript')
             self.send_header('Content-Length', len(content))
             self.end_headers()
             self.wfile.write(content)
