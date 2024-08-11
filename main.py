@@ -127,6 +127,7 @@ setup_50hz()
 if __name__ == "__main__":
     print("Control the mobot with the \"uiok\" keys.")
     print("Control the pan/tilt with \"werd\" keys.")
+    print("Space bar to stop")
     print("q to quit.")
     pan = 120 # pan is backwords
     tilt = 90 # tilt is backwords
