@@ -66,6 +66,9 @@ def setup_50hz():
     bus.write_word_data(addr, 0x0a, 0) # ch 1 start time = 0us
     bus.write_word_data(addr, 0x0c, 312) # ch 1 end time = 1.5ms
 
+    bus.write_word_data(addr, 0x0e, 0) # ch 2 start time = 0us
+    bus.write_word_data(addr, 0x10, 312) # ch 2 end time = 1.5ms
+
     bus.write_word_data(addr, 0x12, 0) # ch 3 start time = 0us
     bus.write_word_data(addr, 0x14, 305) # ch 3 end time = 1.5ms
 
@@ -115,12 +118,15 @@ def rightTurn():
 def leftTurn():
     move(0, 100)
 
-def gimbal(pan, tilt):
+def gimbal(pan, tilt, grab):
     # print("PT", pan, tilt)
     pan_setting = scale(pan, 80, 220, 209, 416)
     tilt_setting = scale(tilt, 50, 250, 209, 416)
-    bus.write_word_data(addr, 0x08, pan_setting)
-    bus.write_word_data(addr, 0x0c, tilt_setting)
+    bus.write_word_data(addr, 0x08, pan_setting) # ch0
+    bus.write_word_data(addr, 0x0c, tilt_setting) # ch1
+    
+    grab_setting = scale(grab, 50, 250, 209, 416)
+    bus.write_word_data(addr, 0x10, grab_setting)
 
 setup_50hz()
 
@@ -129,8 +135,11 @@ if __name__ == "__main__":
     print("Control the pan/tilt with \"werd\" keys.")
     print("Space bar to stop")
     print("q to quit.")
+
     pan = 120 # pan is backwords
     tilt = 90 # tilt is backwords
+    grab = 0 # neutral grab
+
     while True:
         ch = getch()
         if not ch:
@@ -158,6 +167,11 @@ if __name__ == "__main__":
             pan -= 10
         elif ch == "d":
             tilt += 10
+        
+        elif ch == "s":
+            grab += 10
+        elif ch == "f":
+            grab -= 10
 
         elif ch == "q":
             print("Quitting")
@@ -165,5 +179,5 @@ if __name__ == "__main__":
         # else:
         #     stop()
 
-        gimbal(pan, tilt)
+        gimbal(pan, tilt, grab)
     stop()
