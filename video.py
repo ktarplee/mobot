@@ -113,7 +113,7 @@ picam2.start_recording(JpegEncoder(), FileOutput(output))
 try:
     address = ('', 8000)
     server = StreamingServer(address, StreamingHandler)
-    print('Starting server, use <Ctrl-C> to stop')
+    print(f'Starting server on http://{address[0]}:{address[1]}, use <Ctrl-C> to stop')
     server.serve_forever()
 finally:
     picam2.stop_recording()

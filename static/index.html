@@ -1,9 +1,12 @@
+<!DOCTYPE html>
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>Mobot</title>
 
-    <script src="control.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="control.js "></script>
 </head>
 
 <body>
@@ -24,19 +27,21 @@
         <input type="submit" name="upvote" value="Upvote" />
     </form>
 
+    <p>To use keyboard shortcuts on Mac (Safari) type Control-Option then the key.  More information <a href=https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/accesskey>here</a>.</p>
+
     <iframe name="dummy" style="display:none;"></iframe>
     <form action="/update" method="post" target="dummy">
-        <input type="submit" name="Forward", value="Move 100 100">
-        <input type="submit" name="Reverse", value="Move -100 -100">
-        <input type="submit" name="Turn Left", value="Move -100 100">
-        <input type="submit" name="Turn Right", value="Move 100 -100">
-
-        <input type="submit" name="Tilt Up", value="Tilt 10">
-        <input type="submit" name="Tilt Down", value="Tilt -10">
-        <input type="submit" name="Pan Left", value="Pan -10">
-        <input type="submit" name="Pan Right", value="Pan 10">
-
-        <input type="submit" name="Stop", value="Move 0 0">
+        <input class="big" type="submit" name="forward", value="⇧ (i)" accesskey="i">
+        <input class="big" type="submit" name="reverse", value="⇩ (k)" accesskey="k">
+        <input class="big" type="submit" name="turn left", value="⇦ (u)" accesskey="u">
+        <input class="big" type="submit" name="turn right", value="⇨ (o)" accesskey="o">
+        <br/>
+        <input class="big" type="submit" name="tilt up", value="↥ (e)" accesskey="e">
+        <input class="big" type="submit" name="tilt down", value="↧ (d)" accesskey="d">
+        <input class="big" type="submit" name="pan left", value="↺ (w)" accesskey="w">
+        <input class="big" type="submit" name="pan right", value="↻ (r)" accesskey="r">
+        <br/>
+        <input class="big" type="submit" name="stop", value="STOP (space)" accesskey=" ">
         <!-- <input type="hidden" name="ad_id" value="2"> -->
     </form>
 
