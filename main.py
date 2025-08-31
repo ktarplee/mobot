@@ -4,6 +4,14 @@ import smbus
 import time
 import sys, tty, termios
 
+# servos are connected as follows
+# ch 0 is arm pan
+# ch 1 is arm tilt
+# ch 2 is arm grab
+# ch 3 is drive left
+# ch 4 is drive right
+# ch 5 is sonar pan
+
 def getch():
     """Get a single character from stdin, Unix version"""
 
@@ -48,6 +56,11 @@ def setup_200hz():
     bus.write_word_data(addr, 0x16, 0)
     bus.write_word_data(addr, 0x18, 1250)
 
+    # channel 5
+    bus.write_word_data(addr, 0x1a, 0)
+    bus.write_word_data(addr, 0x1c, 1250)
+    
+
 def setup_50hz():
     bus.write_byte_data(addr, 0, 0x20) # enable the chip
     time.sleep(.1)
@@ -74,6 +87,10 @@ def setup_50hz():
 
     bus.write_word_data(addr, 0x16, 0) # ch 4 start time = 0us
     bus.write_word_data(addr, 0x18, 305) # ch 4 end time = 1.5ms
+
+    bus.write_word_data(addr, 0x1a, 0) # ch 5 start time = 0us
+    bus.write_word_data(addr, 0x1c, 305) # ch 5 end time = 1.5ms
+
 
 # while True:
 # 	pipein = open("/var/www/html/FIFO_pipan", 'r')
@@ -106,17 +123,17 @@ def moveRaw(leftValue, rightValue):
 def stop():
     move(0, 0)
 
-def forward():
-    move(100, 100)
+def forward(speed):
+    move(speed, speed)
 
-def reverse():
-    move(-100, -100)
+def reverse(speed):
+    move(-speed, -speed)
 
-def rightTurn():
-    move(100, 0)
+def rightTurn(speed):
+    move(speed, 0)
 
-def leftTurn():
-    move(0, 100)
+def leftTurn(speed):
+    move(0, speed)
 
 def gimbal(pan, tilt, grab):
     # print("PT", pan, tilt)
@@ -126,7 +143,7 @@ def gimbal(pan, tilt, grab):
     bus.write_word_data(addr, 0x0c, tilt_setting) # ch1
     
     grab_setting = scale(grab, 50, 250, 209, 416)
-    bus.write_word_data(addr, 0x10, grab_setting)
+    bus.write_word_data(addr, 0x10, grab_setting) # ch2
 
 setup_50hz()
 
@@ -138,7 +155,8 @@ if __name__ == "__main__":
 
     pan = 120 # pan is backwords
     tilt = 90 # tilt is backwords
-    grab = 0 # neutral grab
+    grab = 45 # neutral grab
+    speed = 100 # [0, 100]
 
     while True:
         ch = getch()
@@ -150,13 +168,13 @@ if __name__ == "__main__":
         if ch == " ":
             stop()
         elif ch == "i":
-            forward()
+            forward(speed)
         elif ch == "k":
-            reverse()
+            reverse(speed)
         elif ch == "u":
-            leftTurn()
+            leftTurn(speed)
         elif ch == "o":
-            rightTurn()
+            rightTurn(speed)
         
         # pan/tilt control
         elif ch == "w":
@@ -172,6 +190,15 @@ if __name__ == "__main__":
             grab += 10
         elif ch == "f":
             grab -= 10
+        
+        elif ch == "n":
+            speed -= 10
+            speed = max(0, speed)
+            print("speed", speed)
+        elif ch == "m":
+            speed += 10
+            speed = min(100, speed)
+            print("speed", speed)
 
         elif ch == "q":
             print("Quitting")
