@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import pi_servo_hat
 
-# setup
+# setup sonar
 GPIO.setmode(GPIO.BCM)
 TRIG = 23
 ECHO = 24

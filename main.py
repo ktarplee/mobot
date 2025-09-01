@@ -4,6 +4,8 @@ import pi_servo_hat
 import sys
 import tty
 import termios
+import time
+import RPi.GPIO as GPIO
 
 # servos are connected as follows
 # ch 0 is arm pan
@@ -12,9 +14,48 @@ import termios
 # ch 3 is drive left
 # ch 4 is drive right
 # ch 5 is sonar pan
+armPanCh = 0
+armTiltCh = 1
+armGrabCh = 2
+driveLeftCh = 3
+driveRightCh = 4
+sonarCh = 5
 
 servoHat = pi_servo_hat.PiServoHat()
 servoHat.restart()
+
+# setup sonar
+GPIO.setmode(GPIO.BCM)
+TRIG = 23
+ECHO = 24
+GPIO.setup(TRIG, GPIO.OUT)
+GPIO.setup(ECHO, GPIO.IN)
+
+
+def measure():
+    GPIO.output(TRIG, False)
+    time.sleep(0.5)
+
+    GPIO.output(TRIG, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIG, False)
+
+    # wait until ECHO goes high
+    while GPIO.input(ECHO) == 0:
+        pulse_start = time.time()
+
+    # wait until ECHO goes low
+    while GPIO.input(ECHO) == 1:
+        pulse_end = time.time()
+
+    # calculate distance
+    pulse_duration = pulse_end - pulse_start
+    distance = pulse_duration * 17150
+    distance = round(distance, 2)
+    return distance
+
+
+minTheta, maxTheta, step = -30, 130, 10
 
 
 def scale(x, in_min, in_max, out_min, out_max):
@@ -33,9 +74,6 @@ def getch():
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
     return ch
 
-
-right = 3
-left = 4
 
 # while True:
 # 	pipein = open("/var/www/html/FIFO_pipan", 'r')
@@ -58,8 +96,8 @@ def move(leftSpeed, rightSpeed):
     leftValue = scaleMotor(-leftSpeed)
     rightValue = scaleMotor(rightSpeed)
     print("LR", leftValue, rightValue)
-    servoHat.move_servo_position(left, leftValue)
-    servoHat.move_servo_position(right, rightValue)
+    servoHat.move_servo_position(driveLeftCh, leftValue)
+    servoHat.move_servo_position(driveRightCh, rightValue)
 
 
 def stop():
@@ -84,9 +122,9 @@ def leftTurn(speed):
 
 def gimbal(pan, tilt, grab):
     # print("PT", pan, tilt)
-    servoHat.move_servo_position(0, pan)
-    servoHat.move_servo_position(1, tilt)
-    servoHat.move_servo_position(2, grab)
+    servoHat.move_servo_position(armPanCh, pan)
+    servoHat.move_servo_position(armTiltCh, tilt)
+    servoHat.move_servo_position(armGrabCh, grab)
 
 
 if __name__ == "__main__":
@@ -99,6 +137,7 @@ if __name__ == "__main__":
     tilt = 90  # tilt is backwords
     grab = 45  # neutral grab
     speed = 100  # [0, 100]
+    sonar = 90  # [-30, 130]
 
     while True:
         ch = getch()
@@ -128,11 +167,23 @@ if __name__ == "__main__":
         elif ch == "d":
             tilt += 10
 
+        # grab
         elif ch == "s":
             grab += 10
         elif ch == "f":
             grab -= 10
 
+        # sonar
+        elif ch == "g":
+            sonar += 10
+            sonar = min(130, sonar)
+        elif ch == "h":
+            sonar -= 10
+            sonar = max(-30, sonar)
+        elif ch == "b":
+            print("Sonar range is", measure(), "cm")
+
+        # speed control
         elif ch == "n":
             speed -= 10
             speed = max(0, speed)
@@ -142,6 +193,7 @@ if __name__ == "__main__":
             speed = min(100, speed)
             print("speed", speed)
 
+        # quit
         elif ch == "q":
             print("Quitting")
             break
