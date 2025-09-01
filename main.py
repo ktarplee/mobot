@@ -107,7 +107,10 @@ if __name__ == "__main__":
     print('Control sonar with "gh" and measure with "b"')
     print("Space bar to stop")
     print("q to quit.")
-
+    
+    left = 0 # [-100, 100]
+    right = 0 # [-100, 100]
+    speed = 100 # [0, 100]
     pan = 30  # pan is backwords
     tilt = 0  # tilt is backwords
     grab = 45  # neutral grab
@@ -122,15 +125,15 @@ if __name__ == "__main__":
 
         # locomotion control
         if ch == " ":
-            move(0, 0)
+            left, right = 0, 0
         elif ch == "i":
-            move(speed, speed)
+            left, right = 100, 100
         elif ch == "k":
-            move(-speed, -speed)
+            left, right = -100, -100
         elif ch == "u":
-            move(0, speed)
+            left, right = 0, 100
         elif ch == "o":
-            move(speed, 0)
+            left, right = 100, 0
 
         # pan/tilt control
         elif ch == "w":
@@ -173,6 +176,7 @@ if __name__ == "__main__":
         
         print(f'({speed}) : {pan},{tilt},{grab} : {sonar}')
         
+        move(left/100*speed, right/100*speed)
         servoHat.move_servo_position(armPanCh, pan)
         servoHat.move_servo_position(armTiltCh, tilt)
         servoHat.move_servo_position(armGrabCh, grab)
