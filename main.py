@@ -17,8 +17,8 @@ import RPi.GPIO as GPIO
 armPanCh = 0
 armTiltCh = 1
 armGrabCh = 2
-driveLeftCh = 3
-driveRightCh = 4
+driveLeftCh = 4
+driveRightCh = 3
 sonarCh = 5
 
 servoHat = pi_servo_hat.PiServoHat()
@@ -59,7 +59,7 @@ minTheta, maxTheta, step = -30, 130, 10
 
 
 def scale(x, in_min, in_max, out_min, out_max):
-    return round((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
 def getch():
@@ -88,56 +88,31 @@ def getch():
 
 
 def scaleMotor(x):
-    return scale(x, -100, 100, 202, 409)
+    return scale(x, -100, 100, 0, 90)
 
 
 # move is the workhorse of motion.  You can pass -100 to 100 for full reverse or full forward on either left or right.
 def move(leftSpeed, rightSpeed):
+    print("move", leftSpeed, rightSpeed)
     leftValue = scaleMotor(-leftSpeed)
     rightValue = scaleMotor(rightSpeed)
-    print("LR", leftValue, rightValue)
+    print("LR", leftValue, rightValue)   
     servoHat.move_servo_position(driveLeftCh, leftValue)
     servoHat.move_servo_position(driveRightCh, rightValue)
 
 
-def stop():
-    move(0, 0)
-
-
-def forward(speed):
-    move(speed, speed)
-
-
-def reverse(speed):
-    move(-speed, -speed)
-
-
-def rightTurn(speed):
-    move(speed, 0)
-
-
-def leftTurn(speed):
-    move(0, speed)
-
-
-def gimbal(pan, tilt, grab):
-    # print("PT", pan, tilt)
-    servoHat.move_servo_position(armPanCh, pan)
-    servoHat.move_servo_position(armTiltCh, tilt)
-    servoHat.move_servo_position(armGrabCh, grab)
-
-
 if __name__ == "__main__":
-    print('Control the mobot with the "uiok" keys.')
+    print('Control the mobot with the "uiok" keys and speed with "nm"')
     print('Control the pan/tilt with "werd" keys.')
+    print('Control sonar with "gh" and measure with "b"')
     print("Space bar to stop")
     print("q to quit.")
 
-    pan = 120  # pan is backwords
-    tilt = 90  # tilt is backwords
+    pan = 30  # pan is backwords
+    tilt = 0  # tilt is backwords
     grab = 45  # neutral grab
     speed = 100  # [0, 100]
-    sonar = 90  # [-30, 130]
+    sonar = 40  # [-30, 130]
 
     while True:
         ch = getch()
@@ -147,31 +122,31 @@ if __name__ == "__main__":
 
         # locomotion control
         if ch == " ":
-            stop()
+            move(0, 0)
         elif ch == "i":
-            forward(speed)
+            move(speed, speed)
         elif ch == "k":
-            reverse(speed)
+            move(-speed, -speed)
         elif ch == "u":
-            leftTurn(speed)
+            move(0, speed)
         elif ch == "o":
-            rightTurn(speed)
+            move(speed, 0)
 
         # pan/tilt control
         elif ch == "w":
             pan += 10
         elif ch == "e":
-            tilt -= 10
+            tilt += 10
         elif ch == "r":
             pan -= 10
         elif ch == "d":
-            tilt += 10
+            tilt -= 10
 
         # grab
         elif ch == "s":
-            grab += 10
-        elif ch == "f":
             grab -= 10
+        elif ch == "f":
+            grab += 10
 
         # sonar
         elif ch == "g":
@@ -187,18 +162,21 @@ if __name__ == "__main__":
         elif ch == "n":
             speed -= 10
             speed = max(0, speed)
-            print("speed", speed)
         elif ch == "m":
             speed += 10
             speed = min(100, speed)
-            print("speed", speed)
 
         # quit
         elif ch == "q":
             print("Quitting")
             break
-        # else:
-        #     stop()
+        
+        print(f'({speed}) : {pan},{tilt},{grab} : {sonar}')
+        
+        servoHat.move_servo_position(armPanCh, pan)
+        servoHat.move_servo_position(armTiltCh, tilt)
+        servoHat.move_servo_position(armGrabCh, grab)
+        servoHat.move_servo_position(sonarCh, sonar)
 
-        gimbal(pan, tilt, grab)
-    stop()
+    move(0,0)
+    servoHat.sleep()
