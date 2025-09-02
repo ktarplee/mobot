@@ -1,0 +1,60 @@
+version = 1
+revision = 3
+requires-python = ">=3.13"
+
+[[package]]
+name = "mobot"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "sparkfun-pi-servo-hat" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "sparkfun-pi-servo-hat" }]
+
+[[package]]
+name = "smbus2"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/10/c9/6d85aa809e107adf85303010a59b340be109c8f815cbedc5c08c73bcffef/smbus2-0.5.0.tar.gz", hash = "sha256:4a5946fd82277870c2878befdb1a29bb28d15cda14ea4d8d2d54cf3d4bdcb035", size = 16950, upload-time = "2024-10-19T09:20:56.746Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/85/9f/2235ba9001e3c29fc342eeb222104420bcb7bac51555f0c034376a744075/smbus2-0.5.0-py2.py3-none-any.whl", hash = "sha256:1a15c3b9fa69357beb038cc0b5d37939702f8bfde1ddc89ca9f17d8461dbe949", size = 11527, upload-time = "2024-10-19T09:20:55.202Z" },
+]
+
+[[package]]
+name = "sparkfun-pi-servo-hat"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sparkfun-qwiic-i2c" },
+    { name = "sparkfun-qwiic-pca9685" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c0/40/9d2542f81e2879ec54a5b5df9a7f5be2221bc8b67e844eb1f716d095493d/sparkfun_pi_servo_hat-2.0.0.tar.gz", hash = "sha256:a2a51e1d82e70d81930f994a24ddc62cfb1618de5e91f9fafa15e1e07af918ea", size = 9545, upload-time = "2025-03-12T23:40:35.962Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b8/e1/6adb3f69004d2e7cfa4d833100946129f7af11fb00f7867baed8472ed47d/sparkfun_pi_servo_hat-2.0.0-py3-none-any.whl", hash = "sha256:dbd6cd167683dd2a4be512328605c8f4a7c470c6e463c58c2982955668608807", size = 7667, upload-time = "2025-03-12T23:40:35.064Z" },
+]
+
+[[package]]
+name = "sparkfun-qwiic-i2c"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "smbus2" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/48/60/7d7cc46d29e92777f0f1c19ec5880f963e25224e41c232ad82a74778855f/sparkfun_qwiic_i2c-2.0.0.tar.gz", hash = "sha256:1e9567815c1c7a4c03fac0d9ca01a24b7deb1368d319b014daa45d965829fab6", size = 11811, upload-time = "2025-03-12T21:20:07.837Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/69/aeaea26f8e614117e8d8658bf26bb7d1612e6418fc0a315fde2452c015f6/sparkfun_qwiic_i2c-2.0.0-py3-none-any.whl", hash = "sha256:75a8f0353fbd3208780f9c0a71cc87d050c7853538d0a7198121b318c0d2ecd5", size = 16041, upload-time = "2025-03-12T21:20:06.593Z" },
+]
+
+[[package]]
+name = "sparkfun-qwiic-pca9685"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sparkfun-qwiic-i2c" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f8/65/e547ed9e49cd4205fddd753778ec83e7e5e77198021421ed05099ce8511d/sparkfun_qwiic_pca9685-2.0.0.tar.gz", hash = "sha256:052568b19b3b19376544349611d1c304e2b741b07fcd68f9c3a13d13e3ec9026", size = 15137, upload-time = "2025-03-12T23:35:51.82Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c7/05/a9dc8ffc86cf5d0f6066db17ff49754357e75695e51410ea838b31e5aa4b/sparkfun_qwiic_pca9685-2.0.0-py3-none-any.whl", hash = "sha256:58302a4a3f1b0dd686a4e848a690ac2a99663db8ad281535adcd31cbdbd7a8a8", size = 12896, upload-time = "2025-03-12T23:35:50.502Z" },
+]

@@ -23,11 +23,20 @@ direnv allow .
 sudo apt install -y python3-dev python3-smbus python3-picamera2
 ```
 
-## Running Servo Controller
+## Running
 
 ```bash
 python main.py
 ```
+
+## Beta
+
+### Install UV
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
 
 ## Camera
 
@@ -36,8 +45,6 @@ Install camera drivers with `sudo apt install libraspberrypi-bin`.
 Then capture images with `rpicam-jpeg --output ~/test.jpg`.
 
 [How to stream RPI camera to a web page](https://raspberrytips.com/how-to-live-stream-pi-camera/).
-
-
 
 ## Troubleshooting
 

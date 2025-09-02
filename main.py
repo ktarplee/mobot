@@ -33,6 +33,7 @@ GPIO.setup(ECHO, GPIO.IN)
 
 
 def measure():
+    "Measure the distance with the sonar range finder."
     GPIO.output(TRIG, False)
     time.sleep(0.5)
 
@@ -96,25 +97,25 @@ def move(leftSpeed, rightSpeed):
     print("move", leftSpeed, rightSpeed)
     leftValue = scaleMotor(-leftSpeed)
     rightValue = scaleMotor(rightSpeed)
-    print("LR", leftValue, rightValue)   
+    print("LR", leftValue, rightValue)
     servoHat.move_servo_position(driveLeftCh, leftValue)
     servoHat.move_servo_position(driveRightCh, rightValue)
 
 
-if __name__ == "__main__":
+def main():
     print('Control the mobot with the "uiok" keys and speed with "nm"')
     print('Control the pan/tilt with "werd" keys.')
     print('Control sonar with "gh" and measure with "b"')
     print("Space bar to stop")
-    print("q to quit.")
-    
-    left = 0 # [-100, 100]
-    right = 0 # [-100, 100]
-    speed = 100 # [0, 100]
+    print('"q" to quit.')
+
+    # state
+    left = 0  # [-100, 100]
+    right = 0  # [-100, 100]
+    speed = 100  # [0, 100]
     pan = 30  # pan is backwords
     tilt = 0  # tilt is backwords
     grab = 45  # neutral grab
-    speed = 100  # [0, 100]
     sonar = 40  # [-30, 130]
 
     while True:
@@ -173,14 +174,18 @@ if __name__ == "__main__":
         elif ch == "q":
             print("Quitting")
             break
-        
-        print(f'({speed}) : {pan},{tilt},{grab} : {sonar}')
-        
-        move(left/100*speed, right/100*speed)
+
+        print(f"({speed}) : {pan},{tilt},{grab} : {sonar}")
+
+        move(left / 100 * speed, right / 100 * speed)
         servoHat.move_servo_position(armPanCh, pan)
         servoHat.move_servo_position(armTiltCh, tilt)
         servoHat.move_servo_position(armGrabCh, grab)
         servoHat.move_servo_position(sonarCh, sonar)
 
-    move(0,0)
+    move(0, 0)
     servoHat.sleep()
+
+
+if __name__ == "__main__":
+    main()
