@@ -42,7 +42,7 @@ def measure():
 minTheta, maxTheta, step = -30, 130, 5
 
 
-print("theta,distance")
+print("theta,distance,x,y")
 for theta in list(range(minTheta, maxTheta, step)) + list(
     range(maxTheta, minTheta, -step)
 ):
@@ -50,9 +50,8 @@ for theta in list(range(minTheta, maxTheta, step)) + list(
     test.move_servo_position(sonar, theta)
     time.sleep(0.03)
     r = measure()
-    x = r*math.cos(theta)
-    y = r*math.sin(theta)
+    x = r * math.cos(theta)
+    y = r * math.sin(theta)
 
     # measure distance with sonar
     print(f"{theta},{r},{x},{y}")
-

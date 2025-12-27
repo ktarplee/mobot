@@ -1,8 +1,0 @@
-# adafruit-circuitpython-pca9685
-# smbus
-# smbus2
-sparkfun-pi-servo-hat
-RPi.GPIO
-
-# dev
-# ipython

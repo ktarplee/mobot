@@ -5,3 +5,6 @@ description = "Calvin's mobile robot software"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = ["sparkfun-pi-servo-hat", "RPi.GPIO"]
+# adafruit-circuitpython-pca9685
+# smbus
+# smbus2

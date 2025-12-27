@@ -34,16 +34,9 @@ uv run sonar4.py
 
 Run `uv run sonar4.py > data.csv` then run `gnuplot` to plot the data
 
-```txt
-set datafile separator ","
-set xrange [140:-40]
-set yrange [0:200]
-plot "data.csv" using 1:2 with points
-
-set xrange [-200:200]
-set yrange [0:200]
-set grid
-plot "data.csv" using 3:4 with points
+```bash
+gnuplot -p plot/theta.gp
+gnuplot -p plot/cartesian.gp
 ```
 
 ## Camera
