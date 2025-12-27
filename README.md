@@ -16,27 +16,35 @@ Clone the repo and enable envrc
 ```bash
 git clone git@github.com:ktarplee/mobot.git
 cd mobot
-direnv allow .
 ```
 
 ```bash
-sudo apt install -y python3-dev python3-smbus python3-picamera2
+sudo apt install -y python3-picamera2
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ## Running
 
 ```bash
-python main.py
+uv run main.py
+uv run sonar4.py
 ```
 
-## Beta
+## GnuPlot
 
-### Install UV
+Run `uv run sonar4.py > data.csv` then run `gnuplot` to plot the data
 
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+```txt
+set datafile separator ","
+set xrange [140:-40]
+set yrange [0:200]
+plot "data.csv" using 1:2 with points
+
+set xrange [-200:200]
+set yrange [0:200]
+set grid
+plot "data.csv" using 3:4 with points
 ```
-
 
 ## Camera
 
