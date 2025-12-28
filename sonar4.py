@@ -10,8 +10,8 @@ ECHO = 24
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 
-test = pi_servo_hat.PiServoHat()
-test.restart()
+servoHat = pi_servo_hat.PiServoHat()
+servoHat.restart()
 
 sonar = 5
 
@@ -41,17 +41,18 @@ def measure():
 
 minTheta, maxTheta, step = -30, 130, 5
 
+thetas = list(range(minTheta, maxTheta, step))
+# thetas += list(range(maxTheta, minTheta, -step))
 
 print("theta,distance,x,y")
-for theta in list(range(minTheta, maxTheta, step)) + list(
-    range(maxTheta, minTheta, -step)
-):
+for theta in thetas:
     # move servo
-    test.move_servo_position(sonar, theta)
+    servoHat.move_servo_position(sonar, theta)
     time.sleep(0.03)
     r = measure()
-    x = r * math.cos(theta)
-    y = r * math.sin(theta)
+    t = theta + 50
+    x = r * math.cos(math.radians(t))
+    y = r * math.sin(math.radians(t))
 
     # measure distance with sonar
-    print(f"{theta},{r},{x},{y}")
+    print(f"{t},{r},{x:.2f},{y:.1f}")

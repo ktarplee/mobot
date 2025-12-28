@@ -3,6 +3,8 @@ import time
 import pi_servo_hat
 import math
 
+GPIO.setwarnings(False)
+
 # setup sonar
 GPIO.setmode(GPIO.BCM)
 TRIG = 23
@@ -10,8 +12,8 @@ ECHO = 24
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 
-test = pi_servo_hat.PiServoHat()
-test.restart()
+servoHat = pi_servo_hat.PiServoHat()
+servoHat.restart()
 
 sonar = 5
 
@@ -41,18 +43,18 @@ def measure():
 
 minTheta, maxTheta, step = -30, 130, 5
 
-
 polar: list[str] = []
 cartesian: list[str] = []
-for theta in list(range(minTheta, maxTheta, step)):
+for theta in range(minTheta, maxTheta, step):
     # move servo
-    test.move_servo_position(sonar, theta)
+    servoHat.move_servo_position(sonar, theta)
     time.sleep(0.03)
     r = measure()
-    x = r * math.cos(theta)
-    y = r * math.sin(theta)
+    t = theta + 50
+    x = r * math.cos(math.radians(t))
+    y = r * math.sin(math.radians(t))
 
-    polar += f"{theta},{r}"
+    polar += f"{t},{r}"
     cartesian += f"{x},{y}"
 
 print("""
