@@ -7,7 +7,8 @@
 import io
 import logging
 import socketserver
-import cgi
+
+# import cgi
 import os.path
 from http import server
 from threading import Condition
@@ -87,17 +88,17 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
         if self.path == "/update":
             self.log_message("handler: Update")
 
-            form = cgi.FieldStorage(
-                fp=self.rfile,
-                headers=self.headers,
-                environ={
-                    "REQUEST_METHOD": "POST",
-                    "CONTENT_TYPE": self.headers["Content-Type"],
-                },
-            )
+            # form = cgi.FieldStorage(
+            #     fp=self.rfile,
+            #     headers=self.headers,
+            #     environ={
+            #         "REQUEST_METHOD": "POST",
+            #         "CONTENT_TYPE": self.headers["Content-Type"],
+            #     },
+            # )
 
-            for field in form.keys():
-                self.log_message("form has %s=%s", field, form[field].value)
+            # for field in form.keys():
+            #     self.log_message("form has %s=%s", field, form[field].value)
             self.send_response(201)
             self.end_headers()
         else:
