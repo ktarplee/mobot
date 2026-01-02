@@ -26,6 +26,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ## Running
 
 ```bash
+uv sync --extra=rpi
 uv run main.py
 uv run sonar4.py
 ```
