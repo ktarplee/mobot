@@ -4,7 +4,15 @@ version = "0.1.0"
 description = "Calvin's mobile robot software"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = ["gpiozero", "sparkfun-pi-servo-hat", "RPi.GPIO"]
+dependencies = ["gpiozero", "sparkfun-pi-servo-hat"]
+
+[project.optional-dependencies]
+rpi = ["RPi.GPIO"]
+# lgpio
+# RPi.GPIO
 # adafruit-circuitpython-pca9685
 # smbus
 # smbus2
+
+# [project.scripts]
+# mobot-cli = "mobot"

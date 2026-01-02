@@ -4,8 +4,7 @@ import pi_servo_hat
 import sys
 import tty
 import termios
-import time
-import RPi.GPIO as GPIO
+from gpiozero import DistanceSensor
 
 # servos are connected as follows
 # ch 0 is arm pan
@@ -24,37 +23,8 @@ sonarCh = 5
 servoHat = pi_servo_hat.PiServoHat()
 servoHat.restart()
 
-# setup sonar
-GPIO.setmode(GPIO.BCM)
-TRIG = 23
-ECHO = 24
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
-
-
-def measure():
-    "Measure the distance with the sonar range finder."
-    GPIO.output(TRIG, False)
-    time.sleep(0.5)
-
-    GPIO.output(TRIG, True)
-    time.sleep(0.00001)
-    GPIO.output(TRIG, False)
-
-    # wait until ECHO goes high
-    while GPIO.input(ECHO) == 0:
-        pulse_start = time.time()
-
-    # wait until ECHO goes low
-    while GPIO.input(ECHO) == 1:
-        pulse_end = time.time()
-
-    # calculate distance
-    pulse_duration = pulse_end - pulse_start
-    distance = pulse_duration * 17150
-    distance = round(distance, 2)
-    return distance
-
+# setup sonar sensor
+sensor = DistanceSensor(echo=24, trigger=23)
 
 minTheta, maxTheta, step = -30, 130, 10
 
@@ -160,7 +130,7 @@ def main():
             sonar -= 10
             sonar = max(-30, sonar)
         elif ch == "b":
-            print("Sonar range is", measure(), "cm")
+            print("Sonar range is", sensor.distance, "m")
 
         # speed control
         elif ch == "n":

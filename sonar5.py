@@ -1,45 +1,15 @@
-import RPi.GPIO as GPIO
 import time
 import pi_servo_hat
 import math
+from gpiozero import DistanceSensor
 
-GPIO.setwarnings(False)
-
-# setup sonar
-GPIO.setmode(GPIO.BCM)
-TRIG = 23
-ECHO = 24
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
+# setup sonar sensor
+sensor = DistanceSensor(echo=24, trigger=23)
 
 servoHat = pi_servo_hat.PiServoHat()
 servoHat.restart()
 
 sonar = 5
-
-
-def measure():
-    GPIO.output(TRIG, False)
-    time.sleep(0.2)
-
-    GPIO.output(TRIG, True)
-    time.sleep(0.00001)
-    GPIO.output(TRIG, False)
-
-    # wait until ECHO goes high
-    while GPIO.input(ECHO) == 0:
-        pulse_start = time.time()
-
-    # wait until ECHO goes low
-    while GPIO.input(ECHO) == 1:
-        pulse_end = time.time()
-
-    # calculate distance
-    pulse_duration = pulse_end - pulse_start
-    distance = pulse_duration * 17150
-    distance = round(distance, 2)
-    return distance
-
 
 minTheta, maxTheta, step = -30, 130, 5
 
@@ -49,7 +19,7 @@ for theta in range(minTheta, maxTheta, step):
     # move servo
     servoHat.move_servo_position(sonar, theta)
     time.sleep(0.03)
-    r = measure()
+    r = sensor.distance
     t = theta + 50
     x = r * math.cos(math.radians(t))
     y = r * math.sin(math.radians(t))
@@ -61,7 +31,7 @@ print("""
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+<title>Mobot Sonar</title>
 </head>
 <body>
 """)
