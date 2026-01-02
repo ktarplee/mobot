@@ -35,13 +35,13 @@ def main():
 
         # pan/tilt control
         elif ch == "w":
-            pan.value += 10
+            pan.value = min(1.0, pan.value + 0.1)
         elif ch == "e":
-            tilt.value += 10
+            tilt.value = min(1.0, tilt.value + 0.1)
         elif ch == "r":
-            pan.value -= 10
+            pan.value = max(-1.0, pan.value - 0.1)
         elif ch == "d":
-            tilt.value -= 10
+            tilt.value = max(-1.0, tilt.value - 0.1)
 
         # quit
         elif ch == "q":
