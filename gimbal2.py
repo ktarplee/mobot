@@ -6,7 +6,7 @@ import termios
 from gpiozero import Servo
 
 pan = Servo(12)
-tilt = Servo(18)
+tilt = Servo(13)
 
 
 def getch():
