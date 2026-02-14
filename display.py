@@ -8,6 +8,7 @@ from luma.lcd.device import st7735
 serial = spi(port=0, device=0, gpio_DC=25, gpio_RST=27)
 device = st7735(serial, width=128, height=128)
 
+
 # set GPIO pins according to your specific HAT (e.g. Pimoroni)
 BUTTON_KEY1 = 21
 
@@ -25,8 +26,9 @@ def wait_for_key():
 def display_text(text):
     with canvas(device) as draw:
         draw.rectangle(device.bounding_box, outline="black", fill="white")
-        draw.text((30, 40), text, fill="red")
+        draw.text((30,40), text, fill="blue")
     time.sleep(1)
+
 
 # set GPIO pins according to your specific HAT (e.g. Pimoroni)
 try:
@@ -76,7 +78,29 @@ try:
         # Display Eliza
         display_text("Hello Eliza")
 
+        # Wait until KEY1 is pressed
+        wait_for_key()
+        # Display Eliza
+        display_text("Hello Eliza")
+
+        # Wait until KEY1 is pressed
+        wait_for_key()
+        # Display Freinds
+        display_text("Hello Freinds")
+
+        # Wait until KEY1 is pressed
+        wait_for_key()
+        # Display Bradon
+        display_text("Hello Bradon")
+
+        # Wait until KEY1 is pressed
+        wait_for_key()
+        # Display Bryer
+        display_text("Hello Bryer")
+
+
+
 except KeyboardInterrupt:       
-    GPIO.cleanup
+    GPIO.cleanup()
 
 
