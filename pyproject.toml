@@ -4,7 +4,12 @@ version = "0.1.0"
 description = "Calvin's mobile robot software"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = ["gpiozero", "sparkfun-pi-servo-hat"]
+dependencies = [
+    "gpiozero",
+    "luma-lcd>=2.13.0",
+    "sparkfun-pi-servo-hat",
+    "spidev>=3.8",
+]
 
 [project.optional-dependencies]
 rpi = ["RPi.GPIO"]
