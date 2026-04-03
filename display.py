@@ -1,5 +1,6 @@
 import time
 import RPi.GPIO as GPIO
+import os
 
 from luma.core.interface.serial import spi
 from luma.core.render import canvas
@@ -11,17 +12,23 @@ device = st7735(serial, width=128, height=128)
 
 # set GPIO pins according to your specific HAT (e.g. Pimoroni)
 BUTTON_KEY1 = 21
+BUTTON_KEY3 = 16
 
 # setup GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_KEY1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(BUTTON_KEY3, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def wait_for_key():
     while True:
         if GPIO.input(BUTTON_KEY1) == False:
-            print("Button KEY1 Pressed")
-            break
+                print("Button UP Pressed")
         time.sleep(0.01)
+
+        if GPIO.input(BUTTON_KEY3) == False:
+                print("shutdown")
+                os.system("sudo shutdown -h now")
+        time.sleep(1)
 
 def display_text(text):
     with canvas(device) as draw:

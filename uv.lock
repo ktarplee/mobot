@@ -76,12 +76,28 @@ wheels = [
 ]
 
 [[package]]
+name = "luma-oled"
+version = "3.15.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "luma-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f9/36/cad8c85b0206ffbbbb7d2609fdb376666521a503837b6e853a4600f09d5f/luma_oled-3.15.0.tar.gz", hash = "sha256:16925fe668f484803df0683add800b19e5dd7316a1d64eb06ec2ae817473901e", size = 20220114, upload-time = "2026-03-07T14:25:42.169Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/17/0c5addb4e42b3494a11384344f1899e4f2b9b98c64c0285cb426963af255/luma_oled-3.15.0-py3-none-any.whl", hash = "sha256:2928d9465ab71b1cd8538c6aec2d51c0fc61a42a5bd27b51b0e6fdd80bc0fd39", size = 33829, upload-time = "2026-03-07T14:25:40.071Z" },
+]
+
+[[package]]
 name = "mobot"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "gpiozero" },
+    { name = "luma-core" },
     { name = "luma-lcd" },
+    { name = "luma-oled" },
+    { name = "pillow" },
+    { name = "rpi-gpio" },
     { name = "sparkfun-pi-servo-hat" },
     { name = "spidev" },
 ]
@@ -94,7 +110,11 @@ rpi = [
 [package.metadata]
 requires-dist = [
     { name = "gpiozero" },
+    { name = "luma-core", specifier = ">=2.5.3" },
     { name = "luma-lcd", specifier = ">=2.13.0" },
+    { name = "luma-oled", specifier = ">=3.15.0" },
+    { name = "pillow", specifier = ">=12.1.1" },
+    { name = "rpi-gpio", specifier = ">=0.7.1" },
     { name = "rpi-gpio", marker = "extra == 'rpi'" },
     { name = "sparkfun-pi-servo-hat" },
     { name = "spidev", specifier = ">=3.8" },
