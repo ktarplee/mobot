@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+
 import time
 import RPi.GPIO as GPIO
 import os
+import subprocess
+import sys
 
 from luma.core.interface.serial import spi
 from luma.core.render import canvas
@@ -25,8 +29,8 @@ GPIO.setup(BUTTON_KEY3, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 try:
     with canvas(device) as draw:
         draw.rectangle(device.bounding_box, outline="black", fill="magenta")
-        draw.text((45, 32),"python1" , fill="red")
-        draw.text((45, 70),"python2" , fill="red")
+        draw.text((45, 32),"names" , fill="red")
+        draw.text((45, 70),"moveX" , fill="red")
 
     time.sleep(1)
 
@@ -35,15 +39,15 @@ try:
 
         if GPIO.input(BUTTON_KEY1) == False:
             print("Running display.py...")
-            os.system("uv run display.py")  # run the other script
+            subprocess.run([sys.executable, "display.py"])  # run the other script
+
         if GPIO.input(BUTTON_KEY2) == False:
             print("Running display2.py...")
-            os.system("uv run display2.py")  # run the other script
-        time.sleep(1)
-
+            subprocess.run([sys.executable, "display2.py"])  # run the other script
+            
         if GPIO.input(BUTTON_KEY3) == False:
             print("shutdown")
-            os.system("sudo poweroff")
+            subprocess.run(["sudo", "poweroff"])
         time.sleep(0.1)
 
 except KeyboardInterrupt:       
