@@ -28,7 +28,7 @@ try:
             # draw a box
             draw.rectangle([0, 115, 0 + 128, 115 + 15], fill="red")
             draw.rectangle([0, 0, 0 + 128, 0 + 6], fill="red")
-            draw.rectangle([20, 23, 22 + 14, 23 + 14], fill="blue")
+            draw.rectangle([20, 117, 22 + 10, 117 + 10], fill="black")
             draw.text((x, y), "X", fill="blue")
         time.sleep(0.1)
 
